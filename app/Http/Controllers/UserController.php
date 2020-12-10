@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Image;
 
 class UserController extends Controller
 {
@@ -75,6 +76,36 @@ class UserController extends Controller
         ($work) && $user->work = $work;
         $user->save();
 
-        return $array;
+        return $this->jsonResponse($array);
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        $array = ['error' => ''];
+        $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+
+        $image = $request->file('avatar');
+
+        if($image) {
+            if(in_array($image->getClientMimeType(), $allowedTypes)){
+                $fileName = md5(time().rand(0,9999)).'.jpg';
+                $path = public_path('/media/avatars') ;
+                $image = Image::make($image->path())->fit(200,200)->save($path.'/'.$fileName);
+
+                $user = User::find($this->loggedUser['id']);
+                $user->avatar = $fileName;
+                $user->save();
+
+                $array['url'] = url('/media/avatars/'.$fileName);
+            } else {
+                $array['error'] = 'Arquivo não suportado';
+                return $this->jsonResponse($array);
+            }
+        } else {
+            $array['error'] = 'Arquivo não enviado';
+            return $this->jsonResponse($array);
+        }
+
+        return $this->jsonResponse($array);
     }
 }

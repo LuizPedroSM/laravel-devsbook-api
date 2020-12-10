@@ -17,7 +17,7 @@ Route::post('/user', [AuthController::class, 'create']);
 Route::put('/user', [UserController::class, 'update']);
 // Route::get('/user', [UserController::class, 'read']);
 
-// Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
+Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
 // Route::post('/user/cover', [UserController::class, 'updateCover']);
 // Route::get('/user/{id}', [UserController::class, 'read']);
 
