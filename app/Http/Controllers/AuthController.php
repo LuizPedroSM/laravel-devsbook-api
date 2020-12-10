@@ -72,9 +72,10 @@ class AuthController extends Controller
     public function create(Request $request)
     {
         $array = ['error' => ''];
+        $data = $request->only(['name', 'email', 'password', 'birthdate']);
 
         $validator = Validator(
-            $request->only(['name', 'email', 'password', 'birthdate']),
+            $data,
             [
                 'name' => ['required', 'string', 'min:2', 'max:100'],
                 'email' => ['required', 'string', 'email', 'unique:users'],
@@ -87,8 +88,6 @@ class AuthController extends Controller
             $array['error'] = $validator->errors();
             return $this->jsonResponse($array, 400);
         }
-
-        $data = $request->only(['name', 'email', 'password', 'birthdate']);
 
         $name = $data['name'];
         $email = $data['email'];
