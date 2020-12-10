@@ -9,7 +9,7 @@ class SearchController extends Controller
 {
     private $loggedUser;
 
-    public function __constructor()
+    public function __construct()
     {
         $this->middleware('auth:api');
         $this->loggedUser = auth()->user();
