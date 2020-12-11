@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FeedController;
 
 Route::get('/ping',  fn() => ['pong' => true]);
 
@@ -21,7 +22,7 @@ Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
 Route::post('/user/cover', [UserController::class, 'updateCover']);
 // Route::get('/user/{id}', [UserController::class, 'read']);
 
-// Route::post('/feed', [FeedController::class, 'create']);
+Route::post('/feed', [FeedController::class, 'create']);
 // Route::get('/feed', [FeedController::class, 'read']);
 
 // Route::get('/feed/user', [FeedController::class, 'userFeed']);
