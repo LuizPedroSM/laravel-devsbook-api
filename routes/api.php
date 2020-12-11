@@ -25,8 +25,8 @@ Route::post('/user/cover', [UserController::class, 'updateCover']);
 Route::post('/feed', [FeedController::class, 'create']);
 Route::get('/feed', [FeedController::class, 'read']);
 
-// Route::get('/feed/user', [FeedController::class, 'userFeed']);
-// Route::get('/feed/user/{id}', [FeedController::class, 'userFeed']);
+Route::get('/feed/user', [FeedController::class, 'userFeed']);
+Route::get('/feed/user/{id}', [FeedController::class, 'userFeed']);
 
 
 // Route::post('/post/{id}/like', [PostController::class, 'like']);
