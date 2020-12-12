@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\PostController;
 
 Route::get('/ping',  fn() => ['pong' => true]);
 
@@ -29,7 +30,7 @@ Route::get('/feed/user', [FeedController::class, 'userFeed']);
 Route::get('/feed/user/{id}', [FeedController::class, 'userFeed']);
 
 
-// Route::post('/post/{id}/like', [PostController::class, 'like']);
+Route::post('/post/{id}/like', [PostController::class, 'like']);
 // Route::post('/post/{id}/comment', [PostController::class, 'comment']);
 
 // Route::get('/search', [SearchController::class, 'search']);
