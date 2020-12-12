@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\PostLike;
+use App\Models\PostComment;
 
 class PostController extends Controller
 {
@@ -55,6 +56,36 @@ class PostController extends Controller
             return $this->jsonResponse($array);
         }
 
+
+        return $this->jsonResponse($array);
+    }
+
+    public function comment(Request $request, $id)
+    {
+        $array = ['error' => ''];
+
+        $validator = Validator($request->only(['txt']), ['txt' => ['required', 'min:2']]);
+
+        if ($validator->fails()) {
+            $array['error'] = $validator->errors();
+            return $this->jsonResponse($array, 400);
+        }
+
+        $txt = $request->input('txt');
+
+        $postExists = Post::find($id);
+
+        if ($postExists) {
+            $newComment = new PostComment();
+            $newComment->id_post = $id;
+            $newComment->id_user = $this->loggedUser['id'];
+            $newComment->created_at = date('Y-m-d H:i:s');
+            $newComment->body = $txt;
+            $newComment->save();
+
+        } else {
+            $array['error'] = 'Post não existe';
+        }
 
         return $this->jsonResponse($array);
     }
