@@ -181,4 +181,39 @@ class FeedController extends Controller
 
         return $this->jsonResponse($array);
     }
+
+    public function userPhotos(Request $request, $id = false)
+    {
+        $array = ['error' => ''];
+
+        if ($id == false) {
+            $id = $this->loggedUser['id'];
+        }
+
+        $page = intval($request->input('page'));
+        $perPage = 2;
+
+        // 1. Pegar as fotos do usuário ordenado pela data
+        $postList = Post::where('id_user', $id)->where('type', 'photo')
+            ->orderBy('created_at', 'desc')
+            ->offset($page * $perPage)
+            ->limit($perPage)
+            ->get();
+
+        $postTotal = Post::where('id_user', $id)->where('type', 'photo')->count();
+        $pageCount = ceil($postTotal / $perPage);
+
+        // 2. Preencher as informações adicionais
+        $posts = $this->_postListToObject($postList, $this->loggedUser['id']);
+
+        foreach ($posts as $pKey => $post) {
+            $posts[$pKey]['body'] = url('media/uploads/' . $posts[$pKey]['body']);
+        }
+
+        $array['pageCount'] = $pageCount;
+        $array['currentPage'] = $page;
+        $array['posts'] = $posts;
+
+        return $this->jsonResponse($array);
+    }
 }

@@ -26,13 +26,14 @@ Route::post('/user/cover', [UserController::class, 'updateCover']);
 Route::post('/user/{id}/follow', [UserController::class, 'follow']);
 
 Route::get('/user/{id}/followers', [UserController::class, 'followers']);
-Route::get('/user/{id}/photo', [UserController::class, 'photo']);
 Route::get('/user/{id}', [UserController::class, 'read']);
 
 Route::post('/feed', [FeedController::class, 'create']);
 Route::get('/feed', [FeedController::class, 'read']);
 
 Route::get('/feed/user', [FeedController::class, 'userFeed']);
+Route::get('/feed/user/photo', [FeedController::class, 'userPhotos']);
+Route::get('/feed/user/{id}/photo', [FeedController::class, 'userPhotos']);
 Route::get('/feed/user/{id}', [FeedController::class, 'userFeed']);
 
 
