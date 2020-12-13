@@ -212,4 +212,40 @@ class UserController extends Controller
 
         return $this->jsonResponse($array);
     }
+
+    public function followers($id)
+    {
+        $array = ['error' => ''];
+        $userExists = User::find($id);
+
+        if ($userExists) {
+            $followers = UserRelation::where('user_to', $id)->get();
+            $following = UserRelation::where('user_from', $id)->get();
+
+            $array['followers'] = [];
+            $array['following'] = [];
+
+            foreach ($followers as $item) {
+                $user = User::find($item['user_from'], ['id', 'name', 'avatar']);
+                $array['followers'][] = [
+                    'id' => $user['id'],
+                    'name' => $user['name'],
+                    'avatar' => url('media/avatars/' . $user['avatar'])
+                ];
+            }
+
+            foreach ($following as $item) {
+                $user = User::find($item['user_to'], ['id', 'name', 'avatar']);
+                $array['following'][] = [
+                    'id' => $user['id'],
+                    'name' => $user['name'],
+                    'avatar' => url('media/avatars/' . $user['avatar'])
+                ];
+            }
+        } else {
+            $array['error'] = 'Usuário inexistente';
+            return $this->jsonResponse($array, 400);
+        }
+        return $this->jsonResponse($array);
+    }
 }
