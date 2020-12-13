@@ -180,4 +180,36 @@ class UserController extends Controller
 
         return $this->jsonResponse($array);
     }
+
+    public function follow($id)
+    {
+        $array = ['error' => ''];
+
+        if ($id == $this->loggedUser['id']) {
+            $array['error'] = 'Você não pode seguir a si mesmo';
+            return $this->jsonResponse($array, 400);
+        }
+
+        $userExists = User::find($id);
+
+        if ($userExists) {
+            $relation = UserRelation::where('user_from', $this->loggedUser['id'])->where('user_to', $id)->first();
+
+            if ($relation) {
+                // para de seguir
+                $relation->delete();
+            } else {
+                // seguir
+                $newRelation = new UserRelation();
+                $newRelation->user_from = $this->loggedUser['id'];
+                $newRelation->user_to = $id;
+                $newRelation->save();
+            }
+        } else {
+            $array['error'] = 'Usuário inexistente';
+            return $this->jsonResponse($array, 400);
+        }
+
+        return $this->jsonResponse($array);
+    }
 }
