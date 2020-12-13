@@ -6,8 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SearchController;
 
-Route::get('/ping',  fn() => ['pong' => true]);
+Route::get('/ping',  fn () => ['pong' => true]);
 
 Route::get('/401', [AuthController::class, 'unauthorized'])->name('login');
 
@@ -33,4 +34,4 @@ Route::get('/feed/user/{id}', [FeedController::class, 'userFeed']);
 Route::post('/post/{id}/like', [PostController::class, 'like']);
 Route::post('/post/{id}/comment', [PostController::class, 'comment']);
 
-// Route::get('/search', [SearchController::class, 'search']);
+Route::get('/search', [SearchController::class, 'search']);

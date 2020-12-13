@@ -32,8 +32,8 @@ class FeedController extends Controller
 
             // Preencher informações do usuário
             $userInfo = User::find($postItem['id_user']);
-            $userInfo['avatar'] = url('media/avatars/'.$userInfo['avatar']);
-            $userInfo['cover'] = url('media/covers/'.$userInfo['cover']);
+            $userInfo['avatar'] = url('media/avatars/' . $userInfo['avatar']);
+            $userInfo['cover'] = url('media/covers/' . $userInfo['cover']);
             $postList[$postKey]['user'] = $userInfo;
 
             // Preencher informações de likes
@@ -88,7 +88,7 @@ class FeedController extends Controller
                     $array['error'] = 'Type text selecionado, mas foi enviado body';
                     return $this->jsonResponse($array, 400);
                 }
-            break;
+                break;
             case 'photo':
                 if ($photo) {
                     $fileName = md5(time() . rand(0, 9999)) . '.jpg';
@@ -103,7 +103,7 @@ class FeedController extends Controller
                     $array['error'] = 'Type photo selecionado, mas foi enviado photo';
                     return $this->jsonResponse($array, 400);
                 }
-            break;
+                break;
         }
 
         $newPost = new Post();

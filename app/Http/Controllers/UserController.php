@@ -64,8 +64,8 @@ class UserController extends Controller
             }
         }
 
-        if ($password){
-            if($password === $password_confirm) {
+        if ($password) {
+            if ($password === $password_confirm) {
                 $user->password = $hash;
             } else {
                 $array['error'] = 'As senhas não são iguais';
@@ -89,17 +89,17 @@ class UserController extends Controller
 
         $image = $request->file('avatar');
 
-        if($image) {
-            if(in_array($image->getClientMimeType(), $allowedTypes)){
-                $fileName = md5(time().rand(0,9999)).'.jpg';
-                $path = public_path('/media/avatars') ;
-                $image = Image::make($image->path())->fit(200,200)->save($path.'/'.$fileName);
+        if ($image) {
+            if (in_array($image->getClientMimeType(), $allowedTypes)) {
+                $fileName = md5(time() . rand(0, 9999)) . '.jpg';
+                $path = public_path('/media/avatars');
+                $image = Image::make($image->path())->fit(200, 200)->save($path . '/' . $fileName);
 
                 $user = User::find($this->loggedUser['id']);
                 $user->avatar = $fileName;
                 $user->save();
 
-                $array['url'] = url('/media/avatars/'.$fileName);
+                $array['url'] = url('/media/avatars/' . $fileName);
             } else {
                 $array['error'] = 'Arquivo não suportado';
                 return $this->jsonResponse($array);
@@ -119,17 +119,17 @@ class UserController extends Controller
 
         $image = $request->file('cover');
 
-        if($image) {
-            if(in_array($image->getClientMimeType(), $allowedTypes)){
-                $fileName = md5(time().rand(0,9999)).'.jpg';
-                $path = public_path('/media/covers') ;
-                $image = Image::make($image->path())->fit(850,310)->save($path.'/'.$fileName);
+        if ($image) {
+            if (in_array($image->getClientMimeType(), $allowedTypes)) {
+                $fileName = md5(time() . rand(0, 9999)) . '.jpg';
+                $path = public_path('/media/covers');
+                $image = Image::make($image->path())->fit(850, 310)->save($path . '/' . $fileName);
 
                 $user = User::find($this->loggedUser['id']);
                 $user->cover = $fileName;
                 $user->save();
 
-                $array['url'] = url('/media/covers/'.$fileName);
+                $array['url'] = url('/media/covers/' . $fileName);
             } else {
                 $array['error'] = 'Arquivo não suportado';
                 return $this->jsonResponse($array);
@@ -146,9 +146,9 @@ class UserController extends Controller
     {
         $array = ['error' => ''];
 
-        if($id) {
+        if ($id) {
             $info = User::find($id);
-            if(!$info){
+            if (!$info) {
                 $array['error'] = 'Usuário inexistente';
                 return $this->jsonResponse($array, 400);
             }
@@ -158,7 +158,7 @@ class UserController extends Controller
 
         $info['avatar'] = url('media/avatars/' . $info['avatar']);
         $info['cover'] = url('media/covers/' . $info['cover']);
-        $info['me'] = ($info['id'] == $this->loggedUser['id'])? true : false;
+        $info['me'] = ($info['id'] == $this->loggedUser['id']) ? true : false;
 
         $dateFrom = new DateTime($info['birthdate']);
         $dateTo = new DateTime($info['today']);
@@ -174,7 +174,7 @@ class UserController extends Controller
         $hasRelation = UserRelation::where('user_from', $this->loggedUser['id'])
             ->where('user_to', $info['id'])->count();
 
-        $info['isFollowing'] = ($hasRelation > 0)? true : false;
+        $info['isFollowing'] = ($hasRelation > 0) ? true : false;
 
         $array['data'] = $info;
 
